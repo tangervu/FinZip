@@ -4,6 +4,7 @@
  * 
  * @link http://www.itella.fi/liitteet/palvelutjatuotteet/yhteystietopalvelut/uusi_postinumeropalvelut_palvelukuvaus_ja_kayttoehdot.pdf
  * @author Tuomas Angervuori <tuomas.angervuori@gmail.com>
+ * @license http://opensource.org/licenses/LGPL-3.0 LGPL v3
  */
 
 class FinZip {
