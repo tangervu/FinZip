@@ -192,6 +192,7 @@ class FinZip {
 		}
 		
 		//Find filename to download
+		ftp_pasv($ftp, true);
 		$list = ftp_nlist($ftp,'.');
 		$file = null;
 		foreach($list as $item) {
