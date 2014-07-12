@@ -1,7 +1,9 @@
 {
 	"name": "tangervu/FinZip",
-	"description": "Fetch Finnish localities and street names",
+	"description": "Finnish localities and street names / Suomalaiset paikkakunnat ja kadunnimet",
+	"keywords": ["locality","city","cities","geocode","geocoding","osoite","katu","postinumero","paikkakunta","kaupunki","itella"],
 	"homepage": "https://github.com/tangervu/FinZip",
+	"license": "LGPL-3.0",
 	"authors": {
 		"name": "Tuomas Angervuori",
 		"email": "tuomas.angervuori@gmail.com",
