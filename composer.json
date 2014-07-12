@@ -4,12 +4,14 @@
 	"keywords": ["locality","city","cities","geocode","geocoding","osoite","katu","postinumero","paikkakunta","kaupunki","itella"],
 	"homepage": "https://github.com/tangervu/FinZip",
 	"license": "LGPL-3.0",
-	"authors": {
-		"name": "Tuomas Angervuori",
-		"email": "tuomas.angervuori@gmail.com",
-		"homepage": "http://anger.kapsi.fi/tuomas/",
-		"role": "Developer"
-	},
+	"authors": [
+		{
+			"name": "Tuomas Angervuori",
+			"email": "tuomas.angervuori@gmail.com",
+			"homepage": "http://anger.kapsi.fi/tuomas/",
+			"role": "Developer"
+		}
+	],
 	"require": {
 		"php": ">=5.3.0",
 		"php-google-maps/php-google-maps": "dev-master"
