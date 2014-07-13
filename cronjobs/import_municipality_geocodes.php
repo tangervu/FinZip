@@ -25,6 +25,7 @@ echo "* Loading updated municipalities from db... ";
 $sql = "SELECT id, name FROM $table WHERE locationUpdated IS NULL OR updated > locationUpdated OR locationUpdated < :dateLimit";
 $stmt = $pdo->prepare($sql);
 $stmt->execute(array(':dateLimit' => $dateLimit->format('Y-m-d')));
+$municipalities = array();
 while($row = $stmt->fetch()) {
 	$municipalities[$row['id']] = $row['name'];
 }

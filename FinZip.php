@@ -2,7 +2,7 @@
 /**
  * Fetch zip code information from Itella
  * 
- * @link http://www.itella.fi/liitteet/palvelutjatuotteet/yhteystietopalvelut/uusi_postinumeropalvelut_palvelukuvaus_ja_kayttoehdot.pdf
+ * @link http://www.itella.fi/liitteet/palvelutjatuotteet/yhteystietopalvelut/Postinumeropalvelut-Palvelukuvausjakayttoehdot.pdf
  * @author Tuomas Angervuori <tuomas.angervuori@gmail.com>
  * @license http://opensource.org/licenses/LGPL-3.0 LGPL v3
  */
