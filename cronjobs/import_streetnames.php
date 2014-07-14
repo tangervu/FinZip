@@ -48,24 +48,26 @@ echo "Done!\n";
 echo "* Sorting localities... ";
 $localities = array(); //array(municipalityCode => array(localityName => localityData))
 foreach($streetnames as $row) {
-	$municipalityCode = $row['municipality_code'];
-	
-	//Group localities by municipalities
-	if(!isset($localities[$municipalityCode])) {
-		$localities[$municipalityCode] = array();
-	}
-	
-	$localityName = mb_strtolower($row['locality']);
-	if(!isset($localities[$municipalityCode][$localityName])) { //Only add unique localities
-		$localities[$municipalityCode][$localityName] = array(
-			'name' => $row['locality'],
-			'short' => $row['locality_short']
-		);
-		if($row['streetnumber_type'] == 0) {
-			$localities[$municipalityCode][$localityName]['type'] = 0;
+	if($row) {
+		$municipalityCode = $row['municipality_code'];
+		
+		//Group localities by municipalities
+		if(!isset($localities[$municipalityCode])) {
+			$localities[$municipalityCode] = array();
 		}
-		else {
-			$localities[$municipalityCode][$localityName]['type'] = 1;
+		
+		$localityName = mb_strtolower($row['locality']);
+		if(!isset($localities[$municipalityCode][$localityName])) { //Only add unique localities
+			$localities[$municipalityCode][$localityName] = array(
+				'name' => $row['locality'],
+				'short' => $row['locality_short']
+			);
+			if($row['streetnumber_type'] == 0) {
+				$localities[$municipalityCode][$localityName]['type'] = 0;
+			}
+			else {
+				$localities[$municipalityCode][$localityName]['type'] = 1;
+			}
 		}
 	}
 }
@@ -157,6 +159,9 @@ $insertStmt = $pdo->prepare("INSERT INTO streetnames SET name = :name, locality 
 $foundStreetIds = array(); //array(localityId => array(streetIds))
 $streetNumbers = array(); //array(streetId => array(data))
 foreach($streetnames as $row) {
+	if(!$row) {
+		continue;
+	}
 	if($row['street'] && $row['streetnumber_type'] > 0) {
 		//print_r($row);
 		if(isset($municipalities[$row['municipality_code']])) {
