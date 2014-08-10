@@ -6,9 +6,9 @@
  * @author Tuomas Angervuori <tuomas.angervuori@gmail.com>
  */
 
-require_once dirname(__FILE__) . '/../FinZip.php';
+require_once __DIR__ . '/../vendor/autoload.php'; //Include the Composer autoloader
 
-$cfg = parse_ini_file(dirname(__FILE__) . '/../settings.ini');
+$cfg = parse_ini_file(__DIR__ . '/../settings.ini');
 $table = 'municipalities';
 
 

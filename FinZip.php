@@ -23,21 +23,18 @@ class FinZip {
 	
 	public function getLocalities() {
 		$tmpFile = $this->fetchFile('PCF');
-		require_once dirname(__FILE__) . '/FinZip/Localities.php';
 		$resource = new FinZip\Localities($tmpFile);
 		return $resource;
 	}
 	
 	public function getLocalityUpdates() {
 		$tmpFile = $this->fetchFile('POM');
-		require_once dirname(__FILE__) . '/FinZip/LocalityUpdates.php';
 		$resource = new FinZip\LocalityUpdates($tmpFile);
 		return $resource;
 	}
 	
 	public function getStreetnames() {
 		$tmpFile = $this->fetchFile('BAF');
-		require_once dirname(__FILE__) . '/FinZip/Streetnames.php';
 		$resource = new FinZip\Streetnames($tmpFile);
 		return $resource;
 	}

@@ -7,9 +7,9 @@
  * @requires php-google-maps/php-google-maps
  */
 
-require_once dirname(__FILE__) . '/../vendor/autoload.php'; //Include the Composer autoloader
+require_once __DIR__ . '/../vendor/autoload.php'; //Include the Composer autoloader
 
-$cfg = parse_ini_file(dirname(__FILE__) . '/../settings.ini');
+$cfg = parse_ini_file(__DIR__ . '/../settings.ini');
 $table = 'municipalities';
 $dateLimit = new DateTime('-1 year'); //When to refresh loaded geodata
 
