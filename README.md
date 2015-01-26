@@ -3,6 +3,18 @@ FinZip
 
 Fetch and parse Finnish zip codes (incl. localities &amp; street addresses) provided by Itella
 
+Installation
+------------
+The recommended way to install Connection.php is through [Composer](http://getcomposer.org).
+```json
+{
+	"require": {
+		"tangervu/finzip": "dev-master",
+		"php-google-maps/php-google-maps": "dev-master"
+	}
+}
+```
+
 Examples
 --------
 ```php
