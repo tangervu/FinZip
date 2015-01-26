@@ -1,6 +1,5 @@
 <?php
 
-
 namespace FinZip;
 
 class Resource implements \SeekableIterator {
@@ -16,16 +15,7 @@ class Resource implements \SeekableIterator {
 		if($zip->numFiles != 1) {
 			throw new \Exception("Unknown source file structure");
 		}
-		$filename = $zip->getNameIndex(0);
-		$tmpDir = sys_get_temp_dir() . '/FinZip';
-		if(!is_dir($tmpDir)) {
-			mkdir($tmpDir);
-		}
-		$this->tmpFile = $tmpDir . '/' . $filename;
-		if(!$zip->extractTo($tmpDir, $filename)) {
-			throw new \Exception("Could not extract source");
-		}
-		$this->handle = fopen($this->tmpFile,'r');
+		$this->handle = $zip->getStream($zip->getNameIndex(0));
 		if(!$this->handle) {
 			throw new \Exception("Could not read source");
 		}
@@ -34,9 +24,6 @@ class Resource implements \SeekableIterator {
 	public function __destruct() {
 		if($this->handle) {
 			fclose($this->handle);
-		}
-		if($this->tmpFile) {
-			unlink($this->tmpFile);
 		}
 	}
 	

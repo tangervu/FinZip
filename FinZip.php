@@ -2,7 +2,7 @@
 /**
  * Fetch zip code information from Itella
  * 
- * @link http://www.itella.fi/liitteet/palvelutjatuotteet/yhteystietopalvelut/Postinumeropalvelut-Palvelukuvausjakayttoehdot.pdf
+ * @link http://posti.fi/liitteet-yrityksille/ehdot/postinumeropalvelut-palvelukuvaus-ja-kayttoehdot.pdf
  * @author Tuomas Angervuori <tuomas.angervuori@gmail.com>
  * @license http://opensource.org/licenses/LGPL-3.0 LGPL v3
  */
@@ -60,7 +60,7 @@ class FinZip {
 		$file = null;
 		foreach($list as $item) {
 			$parts = explode('_',$item);
-			if(isset($parts[1]) && strtoupper($parts[1]) == strtoupper($type)) {
+			if(isset($parts[0]) && strtoupper($parts[0]) == strtoupper($type)) {
 				$file = $item;
 			}
 		}
