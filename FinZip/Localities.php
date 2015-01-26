@@ -1,7 +1,6 @@
 <?php
-namespace FinZip;
 
-require_once dirname(__FILE__) . '/Resource.php';
+namespace FinZip;
 
 class Localities extends Resource {
 	

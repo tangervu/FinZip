@@ -2,9 +2,8 @@
 
 namespace FinZip;
 
-class Resource implements \SeekableIterator {
+class Resource implements \Iterator {
 	
-	protected $tmpFile;
 	protected $handle;
 	protected $key = 0;
 	protected $line;
@@ -25,14 +24,6 @@ class Resource implements \SeekableIterator {
 		if($this->handle) {
 			fclose($this->handle);
 		}
-	}
-	
-	public function seek($position) {
-		if(fseek($this->handle, $position) !== 0) {
-			throw new \OutOfBoundsException("Position $position out of bounds");
-		}
-		$this->key = $position;
-		$this->_readLine();
 	}
 	
 	public function current() {
