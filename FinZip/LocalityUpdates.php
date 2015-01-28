@@ -10,7 +10,8 @@ class LocalityUpdates extends Resource {
 		mb_internal_encoding('UTF-8');
 		
 		if(trim($row) == '') {
-			$this->line = null;
+			trigger_error("Empty line on input data!",\E_USER_WARNING);
+			return null;
 		}
 		
 		else {
@@ -55,7 +56,7 @@ class LocalityUpdates extends Resource {
 				}
 			}
 			
-			$this->line = $item;
+			return $item;
 		}
 	}
 }

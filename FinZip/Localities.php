@@ -10,7 +10,8 @@ class Localities extends Resource {
 		mb_internal_encoding('UTF-8');
 		
 		if(trim($row) == '') {
-			$this->line = null;
+			trigger_error("Empty line on input data!",\E_USER_WARNING);
+			return null;
 		}
 		
 		else {
@@ -46,7 +47,7 @@ class Localities extends Resource {
 					$item[$i] = mb_substr($str,0,4) . '-' . mb_substr($str,4,2) . '-' . mb_substr($str,6,2);
 				}
 			}
-			$this->line = $item;
+			return $item;
 		}
 	}
 }
