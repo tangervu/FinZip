@@ -28,7 +28,7 @@ echo "Done!\n";
 echo "* Update data table... ";
 $pdo->beginTransaction();
 try {
-	$sql = "TRUNCATE TABLE $table";
+	$sql = "DELETE FROM data WHERE 1=1"; //Transaction-friendly truncate
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute();
 	
