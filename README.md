@@ -1,7 +1,7 @@
 FinZip
 ======
 
-Fetch and parse Finnish zip codes (incl. localities &amp; street addresses) provided by Itella
+Fetch and parse Finnish streetnames, zip codes and municipalities provided by Posti.fi. Also includes geocoder for geotagging addresses.
 
 Installation
 ------------
@@ -19,7 +19,7 @@ Examples
 --------
 ```php
 <?php
-require 'FinZip.php';
+require 'vendor/autoload.php';
 $finzip = new FinZip();
 
 //Load list of localities
