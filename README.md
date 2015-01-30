@@ -23,10 +23,16 @@ require 'vendor/autoload.php';
 $finzip = new FinZip();
 
 //Load list of localities
-print_r($finzip->getLocalities());
+$localities = $finzip->getLocalities();
+while($row = $localities->fetch()) {
+	print_r($row);
+}
 
 //Load all Finnish street addresses and their zip codes
-print_r($finzip->getStreetnames());
+$streetnames = $finzip->getStreetnames();
+while($row = $streetnames->fetch()) {
+	print_r($row);
+}
 
 ```
 
