@@ -4,18 +4,11 @@ namespace FinZip;
 
 class Streetnames extends Resource {
 	
-	protected function _readLine() {
+	protected function _getData() {
 		
-		$row = utf8_encode(fread($this->handle,257));
-		
-		mb_internal_encoding('UTF-8');
-		
-		if(trim($row) == '') {
-			trigger_error("Empty line on input data!",\E_USER_WARNING);
-			return null;
-		}
-		
-		else {
+		$row = $this->_readLine();
+		if($row) {
+			
 			//NOTE this appeared slightly different than defined in documentation
 			$item = array(
 				'struct' => mb_substr($row,0,5),
@@ -37,20 +30,16 @@ class Streetnames extends Resource {
 				'municipality_name_swe' => mb_substr($row,236,20)
 			);
 			
-			foreach($item as $key => $val) {
-				$val = trim($val);
-				if($val == '') {
-					$val = null;
-				}
-				$item[$key] = $val;
-			}
+			$item = $this->_trimArray($item);
 			
 			if($item['updated']) {
-				$str = $item['updated'];
-				$item['updated'] = mb_substr($str,0,4) . '-' . mb_substr($str,4,2) . '-' . mb_substr($str,6,2);
+				$item['updated'] = $this->_convertDate($item['updated']);
 			}
 			
 			return $item;
+		}
+		else {
+			return false;
 		}
 	}
 }

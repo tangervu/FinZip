@@ -9,7 +9,6 @@
 require_once __DIR__ . '/../vendor/autoload.php'; //Include the Composer autoloader
 
 $cfg = parse_ini_file(__DIR__ . '/../settings.ini');
-mb_internal_encoding('UTF-8');
 
 
 echo "* Initializing db connection... ";
@@ -44,7 +43,7 @@ try {
 				municipality_name = :municipality_name";
 	$stmt = $pdo->prepare($sql);
 	
-	while($row = $streetnames->fetch()) {
+	while($row = $streetnames->fetch()) { //NOTE this will quit also if empty row in between
 		if($row['streetnumber_type'] == 1) {
 			$streetnumberType = 'odd';
 		}
@@ -54,17 +53,23 @@ try {
 		else {
 			$streetnumberType = null;
 		}
-		$stmt->execute(array(
-			':zip' => $row['zip'],
-			':locality' => $row['locality'],
-			':locality_short' => $row['locality_short'],
-			':street' => $row['street'],
-			':streetnumber_type' => $streetnumberType,
-			':streetnumber_min' => $row['streetnumber_min'],
-			':streetnumber_max' => $row['streetnumber_max'],
-			':municipality_code' => $row['municipality_code'],
-			':municipality_name' => $row['municipality_name']
-		));
+		try {
+			$stmt->execute(array(
+				':zip' => $row['zip'],
+				':locality' => $row['locality'],
+				':locality_short' => $row['locality_short'],
+				':street' => $row['street'],
+				':streetnumber_type' => $streetnumberType,
+				':streetnumber_min' => $row['streetnumber_min'],
+				':streetnumber_max' => $row['streetnumber_max'],
+				':municipality_code' => $row['municipality_code'],
+				':municipality_name' => $row['municipality_name']
+			));
+		}
+		catch(Exception $e) {
+			trigger_error(print_r($row,true),E_USER_NOTICE);
+			throw $e;
+		}
 	}
 	
 	$pdo->commit();

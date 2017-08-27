@@ -4,17 +4,11 @@ namespace FinZip;
 
 class LocalityUpdates extends Resource {
 	
-	protected function _readLine() {
+	protected function _getData() {
 		
-		$row = utf8_encode(fread($this->handle,454));
-		mb_internal_encoding('UTF-8');
-		
-		if(trim($row) == '') {
-			trigger_error("Empty line on input data!",\E_USER_WARNING);
-			return null;
-		}
-		
-		else {
+		$row = $this->_readLine();
+		if($row) {
+			
 			$item = array(
 				'struct' => mb_substr($row,0,4),
 				'level' => mb_substr($row,4,1), //1=zip code
@@ -41,22 +35,18 @@ class LocalityUpdates extends Resource {
 				'type' => mb_substr($row,451,2) //1 = name changed, 2 = zip dissolve, 3 = new zip, 4 = zip joined, 5 = zip re-establish, 6 = new zip
 			);
 			
-			foreach($item as $key => $val) {
-				$val = trim($val);
-				if($val == '') {
-					$val = null;
-				}
-				$item[$key] = $val;
-			}
+			$item = $this->_trimArray($item);
 			
 			foreach(array('updated','period_start','period_end','change_date') as $i) {
 				if($item[$i]) {
-					$str = $item[$i];
-					$item[$i] = mb_substr($str,0,4) . '-' . mb_substr($str,4,2) . '-' . mb_substr($str,6,2);
+					$item[$i] = $this->_convertDate($item[$i]);
 				}
 			}
 			
 			return $item;
+		}
+		else {
+			return false;
 		}
 	}
 }

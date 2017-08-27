@@ -1,83 +1,73 @@
 <?php
 /**
- * Fetch zip code information from Itella
+ * Fetch zip code information from Posti
  * 
- * @link http://posti.fi/liitteet-yrityksille/ehdot/postinumeropalvelut-palvelukuvaus-ja-kayttoehdot.pdf
+ * @link http://www.posti.fi/liitteet-yrityksille/ehdot/postinumeropalvelut-palvelukuvaus-ja-kayttoehdot.pdf
  * @author Tuomas Angervuori <tuomas.angervuori@gmail.com>
  * @license http://opensource.org/licenses/LGPL-3.0 LGPL v3
  */
 
 class FinZip {
 	
-	public $host = 'ftp2.itella.com';
-	public $user = 'postcode';
-	public $password = 'postcode';
-	
-	protected $tmpFiles = array();
-	
-	public function __destruct() {
-		foreach($this->tmpFiles as $file) {
-			unlink($file);
-		}
-	}
+	public $url = 'http://www.posti.fi/webpcode/unzip/';
 	
 	public function getLocalities() {
-		$tmpFile = $this->fetchFile('PCF');
-		$resource = new FinZip\Localities($tmpFile);
+		$resource = new FinZip\Localities($this->_getDataUrl('PCF'));
 		return $resource;
 	}
 	
 	public function getLocalityUpdates() {
-		$tmpFile = $this->fetchFile('POM');
-		$resource = new FinZip\LocalityUpdates($tmpFile);
+		$resource = new FinZip\LocalityUpdates($this->_getDataUrl('POM'));
 		return $resource;
 	}
 	
 	public function getStreetnames() {
-		$tmpFile = $this->fetchFile('BAF');
-		$resource = new FinZip\Streetnames($tmpFile);
+		$resource = new FinZip\Streetnames($this->_getDataUrl('BAF'));
 		return $resource;
 	}
 	
 	/**
 	 * Fetch data file from Itella FTP server
 	 * @param $type Data file type (PCF = localities, BAF = street addresses, POM = zip code changes)
-	 * @returns Temp file name
+	 * @returns handle
 	 */
 	public function fetchFile($type) {
-		//Connect to FTP server
-		$ftp = ftp_connect($this->host);
-		if($ftp === false) {
-			throw new Exception("Could not connect to '{$this->host}'");
-		}
-		if(!ftp_login($ftp, $this->user, $this->password)) {
-			throw new Exception("Login to '{$this->host}' as '{$this->user}' failed");
+		
+		$handle = fopen($fileList[$type],'rb');
+		if(!$handle) {
+			throw new Exception("Could not open url '$url'");
 		}
 		
-		//Find filename to download
-		ftp_pasv($ftp, true);
-		$list = ftp_nlist($ftp,'.');
-		$file = null;
-		foreach($list as $item) {
-			$parts = explode('_',$item);
-			if(isset($parts[0]) && strtoupper($parts[0]) == strtoupper($type)) {
-				$file = $item;
+		return $handle;
+	}
+	
+	/**
+	 * Get directory list
+	 * @param $url Base directory
+	 * @return string url to requested data file
+	 **/
+	private function _getDataUrl($type) {
+		$html = file_get_contents($this->url);
+		if($html === false) {
+			throw new Exception("Could not open url '{$this->url}'");
+		}
+		$dom = new DOMDocument();
+		$dom->loadHTML($html);
+		$links = array();
+		foreach($dom->getElementsByTagName('a') as $item) {
+			$link = $item->getAttribute('href');
+			$data = pathinfo($link);
+			$parts = explode('_',$data['basename']);
+			if(in_array($parts[0], array('PCF','POM','BAF'))) {
+				$links[$parts[0]] = $link;
 			}
 		}
-		if($file == null) {
-			throw new Exception("'$type' file not found");
+		
+		if(isset($links[$type])) {
+			return $links[$type];
 		}
-		
-		//Download requested data file
-		$tmpFile = tempnam(sys_get_temp_dir(),'FinZip_' . $type . '_') . '.zip';
-		$this->tmpFiles[] = $tmpFile;
-		$tmp = fopen($tmpFile,'w');
-		ftp_pasv($ftp, true);
-		ftp_fget($ftp, $tmp, $file, FTP_BINARY);
-		ftp_close($ftp);
-		fclose($tmp);
-		
-		//Return the filename of the temporary file
-		return $tmpFile;
+		else {
+			throw new Exception("Could not locate file type '$type'");
+		}
 	}
 }
