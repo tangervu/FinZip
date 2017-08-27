@@ -5,7 +5,7 @@ Fetch and parse Finnish streetnames, zip codes and municipalities provided by Po
 
 Installation
 ------------
-The recommended way to install Connection.php is through [Composer](http://getcomposer.org).
+The recommended way to install FinZip is through [Composer](http://getcomposer.org).
 ```json
 {
 	"require": {
